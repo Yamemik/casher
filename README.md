@@ -5,18 +5,25 @@
 # создание виртуального пространства
 $ python -m venv venv
 # перейти в свое окружение
-$ source ./venv/bin/activate
 $ venv\Scripts\activate.bat
 # деактивация
-$ deactivate 
+$ deactivate
+# инструмент для управления зависимостями
+$ pip install poetry
 # установить fastapi
 $ pip install fastapi[all]
 
 ```
 
-## fatapi
+## poetry
+```bash
+# сделать пакетным менеджером poetry
+$ poetry init
+
+```
+## fastapi
 ```bash
 # запустить сервер
-$ uvicorn main:app --reload
+$ uvicorn --factory api.app:create_app --reload
 
 ```
