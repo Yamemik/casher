@@ -28,4 +28,5 @@ $ uvicorn --factory api.app:create_app --reload
 ## docker
 ```bash
 $ docker compose -f docker_compose/app.yaml up
+$ docker build --no-cache -t docker_compose-fastapi .
 ```
