@@ -1,5 +1,13 @@
 ﻿# casher
 
+## description
+### backend:
+   - python;
+   - fastapi;
+   - mongodb;
+   - docker;
+   - docker-compose/
+
 ## python
 ```bash
 # инструмент для управления зависимостями
@@ -28,5 +36,8 @@ $ uvicorn --factory api.app:create_app --reload
 ## docker
 ```bash
 $ docker compose -f docker_compose/app.yaml up
+# ребилдинг
 $ docker build --no-cache -t docker_compose-fastapi .
+# makefile
+$ make app
 ```
