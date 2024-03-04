@@ -1,11 +1,16 @@
-from models import user_model
-
-
-def reg_serial(user: user_model) -> dict:
+def create_schema(user) -> dict:
     return {
-        "id": str(user["_id"]),
         "email": str(user["email"]),
         "password": str(user["password"]),
+        "role": str(user["role"]),
+        "telephone_number": "",
+        "city": "",
+        "transfer": "",
+        "point": "",
+        "fio": "",
+        "comment": "",
+        "promo_code": "",
+        "payment_option": "",
     }
 
 
@@ -21,8 +26,18 @@ def get_user_serial(user) -> dict:
         "comment": str(user["comment"]),
         "promo_code": str(user["promo_code"]),
         "payment_option": str(user["payment_option"]),
+        "role": str(user["role"]),
     }
 
 
 def list_user(users) -> list:
     return [get_user_serial(user) for user in users]
+
+
+def get_user_serial_auth(user) -> dict:
+    return {
+        "id": str(user["_id"]),
+        "email": str(user["email"]),
+        "password": str(user["password"]),
+        "role": str(user["role"]),
+    }
