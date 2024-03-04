@@ -1,7 +1,7 @@
 from typing import Annotated
+from fastapi import APIRouter, status, Depends, HTTPException
 
-from fastapi import APIRouter, status, Depends
-from models.user_model import UserModelCreate, UserModelUpdate
+from models.user_model import UserModelUpdate
 from services.user_service import get_all_users, get_user_by_id
 from services.auth_service import get_current_active_user
 
@@ -18,7 +18,9 @@ user_router = APIRouter(
     response_description="Созданный пользователь",
     status_code=status.HTTP_201_CREATED,
 )
-async def post_user(user: UserModelCreate):
+async def post_user(user: UserModelUpdate, current_user: Annotated[UserModelUpdate, Depends(get_current_active_user)]):
+    if current_user["role"] != "owner":
+        raise HTTPException(status_code=400, detail="Недостаточно прав")
     pass
 
 
@@ -26,7 +28,7 @@ async def post_user(user: UserModelCreate):
     "",
     summary="Получить всех пользователей",
 )
-async def get_users():
+async def get_users(current_user: Annotated[UserModelUpdate, Depends(get_current_active_user)]):
     users = get_all_users()
     return users
 
@@ -43,7 +45,7 @@ async def read_users_me(current_user: Annotated[UserModelUpdate, Depends(get_cur
     "/{user_id}",
     summary="Получить пользователя по ид",
 )
-async def get_user(user_id):
+async def get_user(user_id, current_user: Annotated[UserModelUpdate, Depends(get_current_active_user)]):
     user = get_user_by_id(user_id)
     return user
 
@@ -56,4 +58,6 @@ async def get_user(user_id):
     status_code=status.HTTP_202_ACCEPTED,
     response_model_by_alias=False,
 )
-async def patch_user(): ...
+async def patch_user(user: UserModelUpdate,
+                     current_user: Annotated[UserModelUpdate, Depends(get_current_active_user)]):
+    pass
