@@ -41,3 +41,10 @@ $ docker build --no-cache -t docker_compose-fastapi .
 # makefile
 $ make app
 ```
+
+## nginx
+```bash
+sudo nano /etc/nginx/sites-available/cashercollection.shop
+sudo ln -s /etc/nginx/sites-available/cashercollection.shop /etc/nginx/sites-enabled/
+
+```
