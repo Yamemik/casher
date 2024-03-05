@@ -1,7 +1,11 @@
 from common.database import user_collection
 from schema.user_schema import list_user, get_user_serial, get_user_serial_auth
+from passlib.context import CryptContext
 
 from bson import ObjectId
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def get_user_by_email(email: str) -> dict:
@@ -33,3 +37,12 @@ def get_user_by_email_all(email: str) -> dict:
             "email": None
         }
     return get_user_serial(user)
+
+
+def create_owner(password):
+    hash_pass: str = pwd_context.hash(password)
+    user_collection.insert_one({
+        "email": "admin@box.com",
+        "password": hash_pass,
+        "role": "owner",
+    })

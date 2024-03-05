@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, status, Depends, HTTPException
 
 from models.user_model import UserModelUpdate
-from services.user_service import get_all_users, get_user_by_id
+from services.user_service import get_all_users, get_user_by_id, create_owner
 from services.auth_service import get_current_active_user
 
 
@@ -61,3 +61,12 @@ async def get_user(user_id, current_user: Annotated[UserModelUpdate, Depends(get
 async def patch_user(user: UserModelUpdate,
                      current_user: Annotated[UserModelUpdate, Depends(get_current_active_user)]):
     pass
+
+
+@user_router.post(
+    "/create_owner",
+    summary="Создать владельца",
+    status_code=status.HTTP_201_CREATED,
+)
+async def post_create_owner(password: str):
+    create_owner(password)
