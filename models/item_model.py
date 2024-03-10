@@ -17,6 +17,7 @@ class ItemModel(BaseModel):
     specifications: dict = Field(...)
     img_irl: list = Field(...)
     is_visible: bool = Field(default=True)
+    checker: str = Field(...)
 
     model_config = ConfigDict(
         populate_by_name=True,

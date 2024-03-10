@@ -18,7 +18,7 @@ def create_app():
         title="Casher API docs",
     )
 
-    app.mount("/static", StaticFiles(directory="static"), name="static")
+    #app.mount("/static", StaticFiles(directory="static"), name="static")
 
     origins = [
         "https://cashercollection.com/",
