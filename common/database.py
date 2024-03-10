@@ -2,7 +2,7 @@ from pymongo import MongoClient
 
 
 #string_connect = "mongodb+srv://admin:admin@cluster0.532y6ot.mongodb.net/"
-string_connect = "mongodb://0.0.0.0:27017/casher_database"
+string_connect = "mongodb://194.67.90.141:27017/casher_database"
 
 client = MongoClient(string_connect)
 
