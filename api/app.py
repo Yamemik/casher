@@ -1,4 +1,6 @@
 from fastapi import FastAPI, Depends
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from common.settings import settings
 
 from api.user_route import user_router
@@ -14,6 +16,23 @@ def create_app():
         debug=settings.debug,
         docs_url="/api/docs",
         title="Casher API docs",
+    )
+
+    app.mount("/static", StaticFiles(directory="static"), name="static")
+
+    origins = [
+        "https://cashercollection.com/",
+        "https://cashercollection.shop/",
+        "http://localhost",
+        "http://localhost:3000",
+    ]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
     app.include_router(auth_router)

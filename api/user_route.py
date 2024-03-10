@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, status, Depends, HTTPException
 
 from models.user_model import UserModelUpdate
-from services.user_service import get_all_users, get_user_by_id, create_owner
+from services.user_service import get_all_users, get_user_by_id, create_owner, create_employee
 from services.auth_service import get_current_active_user
 
 
@@ -70,3 +70,19 @@ async def patch_user(user: UserModelUpdate,
 )
 async def post_create_owner(password: str):
     create_owner(password)
+
+
+@user_router.post(
+    "/create_employee",
+    summary="Создать сотрудника",
+    status_code=status.HTTP_201_CREATED,
+)
+async def post_create_employee(email: str, password: str, role: str,
+                               current_user: Annotated[UserModelUpdate, Depends(get_current_active_user)]):
+    if current_user["role"] == "redactor" or current_user["role"] == "admin":
+        if role == "redactor" or role == "admin":
+            create_employee(email, password, role)
+        else:
+            raise HTTPException(status_code=400, detail="Неверно введена роль (redactor or admin)")
+    else:
+        raise HTTPException(status_code=400, detail="Недостаточно прав")

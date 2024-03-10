@@ -4,6 +4,7 @@ from pydantic import ConfigDict, BaseModel, Field
 class OrderModel(BaseModel):
     user_id: str = Field(...)
     items: list = Field(...)
+    payment: dict = Field(...)
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -16,12 +17,15 @@ class OrderModel(BaseModel):
                     "images": [],
                     "price": 4500,
                     "size": "S",
-                },{
+                }, {
                     "product": "товар2",
                     "images": [],
                     "price": 4500,
                     "size": "L",
-                },]
+                },],
+                "payment": {
+                    "amount": 9000
+                }
             }
         },
     )

@@ -46,3 +46,15 @@ def create_owner(password):
         "password": hash_pass,
         "role": "owner",
     })
+
+
+def create_employee(email, password, role):
+    hash_pass: str = pwd_context.hash(password)
+    user_collection.insert_one({
+        "email": email,
+        "password": hash_pass,
+        "role": role,
+    })
+
+
+
