@@ -24,7 +24,6 @@ def get_user_by_email(email: str) -> dict:
         return get_user_serial_auth(user)
 
 
-
 def get_user_by_tg(telegram_id: str) -> dict:
     user = user_collection.find_one({"telegram_id": telegram_id})
     if user is None:
@@ -63,17 +62,35 @@ def create_owner(password):
     if user is None:
         user_collection.insert_one({
             "email": "owner",
+            "telegram_id": "",
             "password": hash_pass,
             "role": "owner",
+            "telephone_number": "",
+            "city": "",
+            "transfer": "",
+            "point": "",
+            "fio": "",
+            "comment": "",
+            "promo_code": "",
+            "payment_option": "",
         })
 
 
-def create_employee(email, password, role):
+def create_employee(email, password, role, fio):
     hash_pass: str = pwd_context.hash(password)
     user_collection.insert_one({
         "email": email,
+        "telegram_id": "",
         "password": hash_pass,
         "role": role,
+        "telephone_number": "",
+        "city": "",
+        "transfer": "",
+        "point": "",
+        "fio": fio,
+        "comment": "",
+        "promo_code": "",
+        "payment_option": "",
     })
 
 

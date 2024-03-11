@@ -77,11 +77,11 @@ async def post_create_owner(password: str):
     summary="Создать сотрудника",
     status_code=status.HTTP_201_CREATED,
 )
-async def post_create_employee(email: str, password: str, role: str,
+async def post_create_employee(email: str, password: str, role: str, fio: str,
                                current_user: Annotated[UserModelUpdate, Depends(get_current_active_user)]):
-    if current_user["role"] == "redactor" or current_user["role"] == "admin":
+    if current_user["role"] == "admin" or current_user["role"] == "owner":
         if role == "redactor" or role == "admin":
-            create_employee(email, password, role)
+            create_employee(email, password, role, fio)
         else:
             raise HTTPException(status_code=400, detail="Неверно введена роль (redactor or admin)")
     else:

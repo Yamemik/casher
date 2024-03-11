@@ -26,14 +26,14 @@ class UserModelCreate(BaseModel):
 
 
 class UserModelUpdate(BaseModel):
-    telephone_number: str = Field(...)
-    city: str = Field(...)
-    transfer: str = Field(...)
-    point: str = Field(...)
-    fio: str = Field(...)
-    comment: str = Field(...)
-    promo_code: str = Field(...)
-    payment_option: str = Field(...)
+    telephone_number: str = Field(default="")
+    city: str = Field(default="")
+    transfer: str = Field(default="")
+    point: str = Field(default="")
+    fio: str = Field(default="")
+    comment: str = Field(default="")
+    promo_code: str = Field(default="")
+    payment_option: str = Field(default="")
 
     model_config = ConfigDict(
         populate_by_name=True,
