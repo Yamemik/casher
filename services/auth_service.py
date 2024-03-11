@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 from schema.user_schema import create_schema
 from common.database import user_collection
-from services.user_service import get_user_by_email, get_user_by_email_all
+from services.user_service import get_user_by_email, get_user_by_email_all, get_user_by_tg
 
 
 SECRET_KEY = "asf5hjjiqvbkpa56"
@@ -37,6 +37,16 @@ def reg_user(user_model):
             detail="Пользователь с такой почтой уже зарегистрирован",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+
+def reg_user_by_telegram(user_model):
+    user_dict = create_schema(dict(user_model))
+    user_db = get_user_by_tg(user_dict["telegram_id"])
+    if user_db["telegram_id"] is None:
+        user_dict["password"] = pwd_context.hash(user_dict["password"])
+        user_collection.insert_one(user_dict)
+    else:
+        return user_db
 
 
 def login_user(email, password):

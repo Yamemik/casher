@@ -6,7 +6,8 @@ class UserModelCreate(BaseModel):
     Container for a single user record.
     """
 
-    email: EmailStr = Field(...)
+    email: str = Field(...)
+    telegram_id: str = Field(...)
     password: str = Field(...)
     role: str = Field(default="user")
 
@@ -16,7 +17,9 @@ class UserModelCreate(BaseModel):
         json_schema_extra={
             "example": {
                 "email": "kuancarlos@mail.ru",
+                "telegram_id": "",
                 "password": "123",
+
             }
         },
     )

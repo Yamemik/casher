@@ -4,7 +4,7 @@ from fastapi import APIRouter, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
 from models.user_model import UserModelCreate
-from services.auth_service import reg_user, login_user
+from services.auth_service import reg_user, login_user, reg_user_by_telegram
 
 
 auth_router = APIRouter(
@@ -19,7 +19,14 @@ auth_router = APIRouter(
     status_code=status.HTTP_202_ACCEPTED,
 )
 async def authenticate_user(user: UserModelCreate):
-    reg_user(user)
+    if user.email == "":
+        reg_user_by_telegram(user)
+        access_token = login_user(user.telegram_id, user.password)
+        return access_token
+    else:
+        reg_user(user)
+        access_token = login_user(user.email, user.password)
+        return access_token
 
 
 @auth_router.post(

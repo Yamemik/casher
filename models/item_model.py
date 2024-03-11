@@ -37,6 +37,7 @@ class ItemModel(BaseModel):
                     "Ткань": "джерси"
                 },
                 "img_irl": ["img1", "img2", "img3"],
+                "checker": "number",
             }
         },
     )

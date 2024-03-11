@@ -2,6 +2,7 @@ def create_schema(user) -> dict:
     return {
         "email": str(user["email"]),
         "password": str(user["password"]),
+        "telegram_id": str(user["telegram_id"]),
         "role": str(user["role"]),
         "telephone_number": "",
         "city": "",
@@ -38,6 +39,7 @@ def get_user_serial_auth(user) -> dict:
     return {
         "id": str(user["_id"]),
         "email": str(user["email"]),
+        "telegram_id": str(user["telegram_id"]),
         "password": str(user["password"]),
         "role": str(user["role"]),
     }

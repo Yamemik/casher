@@ -16,6 +16,7 @@ def get_item_serial(item) -> dict:
         "specifications": dict(item["specifications"]),
         "img_irl": list(item["img_irl"]),
         "is_visible": bool(item["is_visible"]),
+        "checker": str(item["checker"]),
     }
 
 

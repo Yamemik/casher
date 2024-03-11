@@ -4,7 +4,7 @@ from fastapi import APIRouter, File, UploadFile, status
 from fastapi.responses import FileResponse
 
 from models.item_model import ItemModel
-from services.item_service import create, get_all, get_by_id
+from services.item_service import create, get_all, get_by_id, get_by_checker
 
 item_router = APIRouter(
     prefix="/api/items",
@@ -71,3 +71,12 @@ async def get_item(item_id):
 async def get_items_by_collection(collection):
     items = ...
     return items
+
+
+@item_router.post(
+    "/checker",
+    summary="Проверить подлинность",
+    status_code=status.HTTP_200_OK,
+)
+async def check_item(number: str):
+    return get_by_checker(number)

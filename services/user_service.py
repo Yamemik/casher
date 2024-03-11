@@ -11,10 +11,26 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def get_user_by_email(email: str) -> dict:
     user = user_collection.find_one({"email": email})
     if user is None:
+        user = user_collection.find_one({"telegram_id": email})
+    elif user is None:
         return {
             "id": None,
             "email": None,
             "password": None,
+            "telegram_id": None,
+            "role": None,
+        }
+    return get_user_serial_auth(user)
+
+
+def get_user_by_tg(telegram_id: str) -> dict:
+    user = user_collection.find_one({"telegram_id": telegram_id})
+    if user is None:
+        return {
+            "id": None,
+            "email": None,
+            "password": None,
+            "telegram_id": None,
             "role": None,
         }
     return get_user_serial_auth(user)
@@ -41,11 +57,13 @@ def get_user_by_email_all(email: str) -> dict:
 
 def create_owner(password):
     hash_pass: str = pwd_context.hash(password)
-    user_collection.insert_one({
-        "email": "admin@box.com",
-        "password": hash_pass,
-        "role": "owner",
-    })
+    user = user_collection.find_one({"role": "owner"})
+    if user is None:
+        user_collection.insert_one({
+            "email": "admin@box.com",
+            "password": hash_pass,
+            "role": "owner",
+        })
 
 
 def create_employee(email, password, role):
