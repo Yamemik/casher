@@ -12,15 +12,17 @@ def get_user_by_email(email: str) -> dict:
     user = user_collection.find_one({"email": email})
     if user is None:
         user = user_collection.find_one({"telegram_id": email})
-    elif user is None:
-        return {
-            "id": None,
-            "email": None,
-            "password": None,
-            "telegram_id": None,
-            "role": None,
-        }
-    return get_user_serial_auth(user)
+        if user is None:
+            return {
+                "id": None,
+                "email": None,
+                "password": None,
+                "telegram_id": None,
+                "role": None,
+            }
+    else:
+        return get_user_serial_auth(user)
+
 
 
 def get_user_by_tg(telegram_id: str) -> dict:
