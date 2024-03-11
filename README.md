@@ -48,3 +48,6 @@ sudo nano /etc/nginx/sites-available/cashercollection.shop
 sudo ln -s /etc/nginx/sites-available/cashercollection.shop /etc/nginx/sites-enabled/
 
 ```
+
+## owner
+### owner
