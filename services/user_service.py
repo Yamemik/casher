@@ -3,6 +3,7 @@ from schema.user_schema import list_user, get_user_serial, get_user_serial_auth
 from passlib.context import CryptContext
 
 from bson import ObjectId
+from pymongo import ReturnDocument
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -11,15 +12,13 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def get_user_by_email(email: str) -> dict:
     user = user_collection.find_one({"email": email})
     if user is None:
-        user = user_collection.find_one({"telegram_id": email})
-        if user is None:
-            return {
-                "id": None,
-                "email": None,
-                "password": None,
-                "telegram_id": None,
-                "role": None,
-            }
+        return {
+            "id": None,
+            "email": None,
+            "password": None,
+            "telegram_id": None,
+            "role": None,
+        }
     else:
         return get_user_serial_auth(user)
 
@@ -94,4 +93,11 @@ def create_employee(email, password, role, fio):
     })
 
 
+def validated_code(code: str):
+    user_db = user_collection.find_one_and_update(
+        {"reg_code": code, "is_validated": False},
+        {'$set': {"is_validated": True}},
+        return_document=ReturnDocument.AFTER
+    )
+    return get_user_serial(user_db)
 

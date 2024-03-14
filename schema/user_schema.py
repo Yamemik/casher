@@ -3,7 +3,9 @@ def create_schema(user) -> dict:
         "email": str(user["email"]),
         "password": str(user["password"]),
         "telegram_id": str(user["telegram_id"]),
+        "reg_code": str(user["reg_code"]),
         "role": str(user["role"]),
+        "is_validated": bool(user["is_validated"]),
         "telephone_number": "",
         "city": "",
         "transfer": "",
@@ -28,6 +30,7 @@ def get_user_serial(user) -> dict:
         "promo_code": str(user["promo_code"]),
         "payment_option": str(user["payment_option"]),
         "role": str(user["role"]),
+        "is_validated": str(user["is_validated"]),
     }
 
 
@@ -42,4 +45,5 @@ def get_user_serial_auth(user) -> dict:
         "telegram_id": str(user["telegram_id"]),
         "password": str(user["password"]),
         "role": str(user["role"]),
+        "is_validated": str(user["is_validated"]),
     }

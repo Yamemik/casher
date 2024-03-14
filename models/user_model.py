@@ -6,20 +6,21 @@ class UserModelCreate(BaseModel):
     Container for a single user record.
     """
 
-    email: str = Field(...)
-    telegram_id: str = Field(...)
+    email: EmailStr = Field(...)
+    telegram_id: str = Field(default=None)
     password: str = Field(...)
+    reg_code: str = Field(default=None)
     role: str = Field(default="user")
+    is_validated: bool = Field(default=False)
 
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
         json_schema_extra={
             "example": {
-                "email": "kuancarlos@mail.ru",
+                "email": "kuancarlos@yandex.ru",
                 "telegram_id": "",
                 "password": "123",
-
             }
         },
     )

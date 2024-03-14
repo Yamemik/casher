@@ -5,10 +5,17 @@ from passlib.context import CryptContext
 from jose import JWTError, jwt
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
+from random import randint
+
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
 
 from schema.user_schema import create_schema
 from common.database import user_collection
-from services.user_service import get_user_by_email, get_user_by_email_all, get_user_by_tg
+from schema.user_schema import get_user_serial
+from services.user_service import get_user_by_email, get_user_by_email_all, validated_code
 
 
 SECRET_KEY = "asf5hjjiqvbkpa56"
@@ -23,13 +30,19 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
 class Token(BaseModel):
     access_token: str
     token_type: str
+    user: dict
 
 
 def reg_user(user_model):
     user_dict = create_schema(dict(user_model))
     user_db = get_user_by_email(user_dict["email"])
+
     if user_db["email"] is None:
+        reg_code = str(randint(1000, 9999))
+        send_email(f"Код подтверждения: {reg_code}", user_dict["email"])
+
         user_dict["password"] = pwd_context.hash(user_dict["password"])
+        user_dict["reg_code"] = reg_code
         user_collection.insert_one(user_dict)
     else:
         raise HTTPException(
@@ -37,16 +50,6 @@ def reg_user(user_model):
             detail="Пользователь с такой почтой уже зарегистрирован",
             headers={"WWW-Authenticate": "Bearer"},
         )
-
-
-def reg_user_by_telegram(user_model):
-    user_dict = create_schema(dict(user_model))
-    user_db = get_user_by_tg(user_dict["telegram_id"])
-    if user_db["telegram_id"] is None:
-        user_dict["password"] = pwd_context.hash(user_dict["password"])
-        user_collection.insert_one(user_dict)
-    else:
-        return user_db
 
 
 def login_user(email, password):
@@ -60,7 +63,7 @@ def login_user(email, password):
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(data={"sub": user_db["email"]}, expires_delta=access_token_expires)
-    return Token(access_token=access_token, token_type="bearer")
+    return Token(access_token=access_token, token_type="bearer", user=user_db)
 
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
@@ -99,3 +102,17 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def send_email(text, email):
+    msg = MIMEMultipart()
+    msg['From'] = "copyright2024@mail.ru"
+    msg['To'] = email
+    msg['Subject'] = "No replay"
+    msg.attach(MIMEText(text, 'plain'))
+
+    smtpObj = smtplib.SMTP('smtp.mail.ru')
+    smtpObj.starttls()
+    smtpObj.login(msg['From'], 'egAfdRBKbajWYEXTudf7')
+    smtpObj.sendmail(msg['From'], msg['To'], msg.as_string())
+    smtpObj.quit()
