@@ -106,13 +106,13 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 def send_email(text, email):
     msg = MIMEMultipart()
-    msg['From'] = "copyright2024@mail.ru"
+    msg['From'] = "para22mount@gmail.com"
     msg['To'] = email
     msg['Subject'] = "No replay"
     msg.attach(MIMEText(text, 'plain'))
 
-    smtpObj = smtplib.SMTP('smtp.mail.ru')
+    smtpObj = smtplib.SMTP('smtp.gmail.com')
     smtpObj.starttls()
-    smtpObj.login(msg['From'], 'egAfdRBKbajWYEXTudf7')
+    smtpObj.login(msg['From'], 'wknl lnwz yuzg wmul')
     smtpObj.sendmail(msg['From'], msg['To'], msg.as_string())
     smtpObj.quit()
