@@ -60,7 +60,7 @@ def create_owner(password):
     user = user_collection.find_one({"role": "owner"})
     if user is None:
         user_collection.insert_one({
-            "email": "owner",
+            "email": "owner@email.ru",
             "telegram_id": "",
             "password": hash_pass,
             "role": "owner",
