@@ -49,5 +49,5 @@ sudo ln -s /etc/nginx/sites-available/cashercollection.shop /etc/nginx/sites-ena
 
 ```
 
-## my starage
+## my storage
 ### [ref1](https://github.com/apepenkov/moysklad_api.git)
