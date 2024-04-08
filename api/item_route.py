@@ -4,7 +4,7 @@ from fastapi import APIRouter, File, UploadFile, status
 from fastapi.responses import FileResponse
 
 from models.item_model import ItemModel
-from services.item_service import create, get_all, get_by_id, get_by_checker
+from services.item_service import create, get_all, get_by_id, get_by_checker, get_folders
 
 item_router = APIRouter(
     prefix="/api/items",
@@ -49,7 +49,17 @@ async def download_file(file):
     status_code=status.HTTP_200_OK,
 )
 async def get_items():
-    items = get_all()
+    items = await get_all()
+    return items
+
+
+@item_router.get(
+    "/folders",
+    summary="Получить все папки(категории) товаров",
+    status_code=status.HTTP_200_OK,
+)
+async def get_item_folders():
+    items = await get_folders()
     return items
 
 
